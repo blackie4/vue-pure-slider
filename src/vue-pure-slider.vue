@@ -32,12 +32,12 @@
       container: {
         type: String,
         default: '',
-        required: true,
+        required: true
       },
       items: {
         type: Array,
         default: [],
-        required: true,
+        required: true
       },
       start: {
         type: Number,
@@ -61,11 +61,11 @@
       },
       slidefn: {
         type: Function,
-        default: function(index, item) { }
+        default: function() { }
       },
       endfn: {
         type: Function,
-        default: function(index, item) { }
+        default: function() { }
       }
     },
     data () {
@@ -85,7 +85,7 @@
           isScrolling: undefined,
           isMove: false
         }
-      }
+      };
     },
     computed: {
       styleInner () {
@@ -137,7 +137,7 @@
       },
       slideTo (index, speed) {
         this.stop();
-        this.slide(index);
+        this.slide(index, speed);
       },
       slidePrev () {
         this.stop();
@@ -167,7 +167,7 @@
         const _index = this.index;
         const _speed = speed || this.speed;
 
-        if (_index == to) return;
+        if (_index === to) return;
 
         let direction = Math.abs(_index-to) / (_index-to);
         if (this.continuous) {
@@ -232,9 +232,9 @@
         this.swiper.delta = {
           x: _touch.pageX - this.swiper.start.x,
           y: _touch.pageY - this.swiper.start.y
-        }
+        };
 
-        if (typeof this.swiper.isScrolling == 'undefined') {
+        if (typeof this.swiper.isScrolling === 'undefined') {
           this.swiper.isScrolling = !!(this.swiper.isScrolling || Math.abs(this.swiper.delta.x) < Math.abs(this.swiper.y) );
         }
 
@@ -243,19 +243,19 @@
           this.stop();
 
           if (this.continuous) {
-            this.setTranslate(this.getCircleIndex(_index - 1), this.swiper.delta.x + this.getTranslate(this.getCircleIndex(_index - 1), _dists).dist, 0, true);
-            this.setTranslate(_index, this.swiper.delta.x + this.getTranslate(_index, _dists).dist, 0, true);
-            this.setTranslate(this.getCircleIndex(_index + 1), this.swiper.delta.x + this.getTranslate(this.getCircleIndex(_index + 1), _dists).dist, 0, true);
+            this.setTranslate(this.getCircleIndex(_index - 1), this.swiper.delta.x + this.getTranslate(this.getCircleIndex(_index - 1), _dists).dist, 0);
+            this.setTranslate(_index, this.swiper.delta.x + this.getTranslate(_index, _dists).dist, 0);
+            this.setTranslate(this.getCircleIndex(_index + 1), this.swiper.delta.x + this.getTranslate(this.getCircleIndex(_index + 1), _dists).dist, 0);
           } else {
             let limit = 1;
-            if (!_index && this.swiper.delta.x > 0 || _index == this.items.length - 1 && this.swiper.delta.x < 0) {
+            if (!_index && this.swiper.delta.x > 0 || _index === this.items.length - 1 && this.swiper.delta.x < 0) {
               limit = Math.abs(this.swiper.delta.x) / this.width + 1;
             }
-            this.swiper.delta.x = this.swiper.delta.x / limit
+            this.swiper.delta.x = this.swiper.delta.x / limit;
 
-            this.setTranslate(_index - 1, this.swiper.delta.x + this.getTranslate(_index - 1, _dists).dist, 0, true);
-            this.setTranslate(_index ,  this.swiper.delta.x + this.getTranslate(_index, _dists).dist, 0, true);
-            this.setTranslate(_index + 1, this.swiper.delta.x + this.getTranslate(_index + 1, _dists).dist, 0, true);
+            this.setTranslate(_index - 1, this.swiper.delta.x + this.getTranslate(_index - 1, _dists).dist, 0);
+            this.setTranslate(_index,  this.swiper.delta.x + this.getTranslate(_index, _dists).dist, 0);
+            this.setTranslate(_index + 1, this.swiper.delta.x + this.getTranslate(_index + 1, _dists).dist, 0);
           }
         }
       },
@@ -270,7 +270,7 @@
             || Math.abs(this.swiper.delta.x) > _width / 2;
         let isPastBounds =
             !_index && this.swiper.delta.x > 0
-            || _index == this.items.length - 1 && this.swiper.delta.x < 0;
+            || _index === this.items.length - 1 && this.swiper.delta.x < 0;
         let direction = this.swiper.delta.x < 0;
 
         this.swiper.isMove = false;
@@ -306,13 +306,13 @@
             this.slidefn(this.index, this.items[this.index]);
           } else {
             if (this.continuous) {
-                this.setTranslate(this.getCircleIndex(_index-1), -_width, _speed);
-                this.setTranslate(_index, 0, _speed);
-                this.setTranslate(this.getCircleIndex(_index+1), _width, _speed);
+              this.setTranslate(this.getCircleIndex(_index-1), -_width, _speed);
+              this.setTranslate(_index, 0, _speed);
+              this.setTranslate(this.getCircleIndex(_index+1), _width, _speed);
             } else {
-                this.setTranslate(_index-1, -_width, _speed);
-                this.setTranslate(_index, 0, _speed);
-                this.setTranslate(_index+1, _width, _speed);
+              this.setTranslate(_index-1, -_width, _speed);
+              this.setTranslate(_index, 0, _speed);
+              this.setTranslate(_index+1, _width, _speed);
             }
           }
         }
@@ -334,13 +334,13 @@
         style['transition-duration'] = translate.speed + 'ms';
         return style;
       },
-      setTranslate (index, dist, speed, isBackup) {
+      setTranslate (index, dist, speed) {
         let distArr = this.dists.split(',');
         let speedArr = this.speeds.split(',');
         distArr[index] = dist;
         speedArr[index] = speed;
-        this.dists = distArr.join(",");
-        this.speeds = speedArr.join(",");
+        this.dists = distArr.join(',');
+        this.speeds = speedArr.join(',');
       },
       getTranslate (index, dists, speeds) {
         let distArr = (dists || this.dists).split(',');
@@ -354,7 +354,7 @@
         return (this.items.length + (index % this.items.length)) % this.items.length;
       }
     }
-  }
+  };
 </script>
 
 <style lang="less" scoped>
