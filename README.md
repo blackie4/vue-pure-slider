@@ -30,17 +30,17 @@ vue-pure-slider, A simple vue component, Easy use, Easy configuration, Compatibl
         items:[
           {
             title: 'pic1',
-            imgUrl: 'http://a.img.pp.cn/fs08/2017/08/02/4/44a727912d76dbb47a34e29fc4f70582.jpg',
+            imgUrl: 'http://kuscript.com/vue-pure-slider/img/slider1.jpg',
             link: ''
           },
           {
             title: 'pic2',
-            imgUrl: 'http://a.img.pp.cn/fs08/2017/07/17/7/11483d25e0123fdd3a66f38a9b788fdd.jpg',
+            imgUrl: 'http://kuscript.com/vue-pure-slider/img/slider2.jpg',
             link: ''
           },
           {
             title: 'pic3',
-            imgUrl: 'http://a.img.pp.cn/fs08/2017/07/05/3/49e0e9f402810f641dde7900599c00f4.jpg',
+            imgUrl: 'http://kuscript.com/vue-pure-slider/img/slider3.jpg',
             link: ''
           }
         ],

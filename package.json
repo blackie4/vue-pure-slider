@@ -1,6 +1,6 @@
 {
   "name": "vue-pure-slider",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "description": "vue-slider,A simple slider component,easy use,and is compatible with mobile and PC terminal",
   "main": "./dist/index.js",
   "scripts": {
@@ -14,12 +14,16 @@
     "vue-slider",
     "pure"
   ],
-  "license": "MIT",
+  "homepage": "https://github.com/blackie4/vue-pure-slider",
   "author": "BinoYip",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blackie4/vue-pure-slider.git"
+  },
   "bugs": {
     "url": "https://github.com/blackie4/vue-pure-slider/issues"
   },
-  "homepage": "https://github.com/blackie4/vue-pure-slider",
+  "pre-commit": ["lint"],
   "dependencies": {
     "vue": "^2.4.2"
   },
@@ -42,5 +46,5 @@
     "vue-template-compiler": "^2.4.2",
     "webpack": "^3.3.0"
   },
-  "pre-commit": ["lint"]
+  "license": "MIT"
 }
