@@ -1,7 +1,7 @@
 <template>
   <div class="vue-pure-slider-wrap" :style="{visibility: isVisible ? 'visible' : 'hidden'}">
     <div class="vue-pure-slider-inner"
-      :style="{width: (width * items.length) +'px'}"
+      :style="styleInner"
       @touchstart="swipeStart"
       @touchmove="swipeMove"
       @touchend="swipeEnd"
@@ -9,18 +9,17 @@
       @transitionend="onTransitionEnd"
     >
       <div class="vue-pure-slider-item" v-for="(item, idx) in items"
-        :style="getStyleObj(idx)"
+        :style="getStyleItem(idx)"
         :data-index="idx"
       >
-        <a class="vue-pure-slider-a" href="javascirpt:void(0);">
-          <img class="vue-pure-slider-img" :src="item.imgUrl" :alt="item.title">
+        <a :href="item.link||'javascript:void(0);'">
+          <img :src="item.imgUrl" :alt="item.title">
         </a>
       </div>
     </div>
-    <div class="indicator-wall">
-      <ul class="indicator">
-        <li v-for="(item, idx) in items" :class="{'active': idx == index}" @click="slideTo(idx)"
-        ></li>
+    <div class="vue-pure-slider-indicator">
+      <ul>
+        <li v-for="(item, idx) in items" :class="{'active': idx == index}" @click="slideTo(idx)">{{idx+1}}</li>
       </ul>
     </div>
   </div>
@@ -30,6 +29,11 @@
   export default {
     name: 'vue-pure-slider',
     props: {
+      container: {
+        type: String,
+        default: '',
+        required: true,
+      },
       items: {
         type: Array,
         default: [],
@@ -49,7 +53,7 @@
       },
       speed: {
         type: Number,
-        default: 300
+        default: 400
       },
       propagation: {
         type: Boolean,
@@ -68,6 +72,7 @@
       return {
         wrap: null,
         width: 0,
+        height: 0,
         index: this.start,
         timer: null,
         dists: '',
@@ -82,17 +87,41 @@
         }
       }
     },
-    mounted () {
-      this.init();
-      if (this.auto) {
-        this.run();
+    computed: {
+      styleInner () {
+        let _style = {};
+        _style['width'] = this.width * this.items.length +'px';
+        if (this.height) {
+          _style['height'] = this.height +'px';
+        }
+        return _style;
       }
+    },
+    watch: {
+      items () {
+        this.init();
+      }
+    },
+    mounted () {
+      if (!this.container || !document.getElementById(this.container)) {
+        console.warn('Container param error!');
+        return;
+      }
+      this.init();
       window.addEventListener('resize', this.init, false);
     },
     methods: {
       init () {
-        this.wrap = document.getElementById(this.$parent.$el.id);
+        this.stop();
+        this.setup();
+        if (this.auto) {
+          this.run();
+        }
+      },
+      setup () {
+        this.wrap = document.getElementById(this.container);
         this.width = this.wrap.getBoundingClientRect().width || this.wrap.offsetWidth;
+        this.height = this.wrap.getBoundingClientRect().height || this.wrap.offsetHeight;
         if (this.index > this.items.length - 1) {
           this.index = 0;
         }
@@ -140,7 +169,6 @@
 
         if (_index == to) return;
 
-        // 1: backward, -1: forward
         let direction = Math.abs(_index-to) / (_index-to);
         if (this.continuous) {
           let natural_direction = direction;
@@ -160,17 +188,14 @@
         this.setTranslate(_index, this.width * direction, _speed);
         this.setTranslate(to, 0, _speed);
 
-        // we need to get the next in place
         if (this.continuous) {
           this.setTranslate(this.getCircleIndex(to - direction), -(this.width * direction), 0);
         }
 
         this.index = to;
         this.slidefn(this.index, this.items[this.index]);
-        // offloadFn(options.callback && options.callback(_index, slides[_index]));
       },
       swipeStart (ev) {
-        // console.log('touch start!');
         let _isTouch = !!(ev.type === 'touchstart');
         let _touch = _isTouch ? ev.touches[0] : ev;
         if (this.propagation) {
@@ -293,7 +318,6 @@
         }
       },
       onTransitionEnd (ev) {
-        // console.log('transition end!');
         if (parseInt(ev.target.getAttribute('data-index'), 10) === this.index) {
           if (this.auto) {
             this.run();
@@ -301,10 +325,9 @@
           this.endfn(this.index, this.items[this.index]);
         }
       },
-      getStyleObj (index) {
+      getStyleItem (index) {
         let style = {};
         let translate = this.getTranslate(index, this.dists, this.speeds);
-        // console.log('translate: '+ JSON.stringify(translate));
         style['width'] = this.width + 'px';
         style['left'] = (index * -this.width) +'px';
         style['-webkit-transform'] = 'translate(' + translate.dist + 'px,0)' + 'translateZ(0)';
@@ -318,7 +341,6 @@
         speedArr[index] = speed;
         this.dists = distArr.join(",");
         this.speeds = speedArr.join(",");
-        // console.log('dists: '+ this.dists); console.log('speeds: '+ this.speeds);
       },
       getTranslate (index, dists, speeds) {
         let distArr = (dists || this.dists).split(',');
@@ -354,8 +376,7 @@
         width:100%;
         height: 100%;
 
-        .vue-pure-slider-a,
-        .vue-pure-slider-img {
+        a, img {
           display: block;
           width: 100%;
           height: 100%;
@@ -363,12 +384,12 @@
       }
     }
 
-    .indicator-wall {
+    .vue-pure-slider-indicator {
       position: absolute;
       bottom: 0;
       width: 100%;
 
-      .indicator {
+      ul {
         text-align: center;
         display: inline-block;
         margin: 0 auto;
@@ -382,8 +403,7 @@
           width: 9px;
           padding: 0;
           margin: 0 2px;
-          line-height: 0;
-          font-size: 0;
+          text-indent: -999px;
           list-style: none;
           overflow: hidden;
           &.active {

@@ -14,8 +14,8 @@ vue-pure-slider, A simple vue component, Easy use, Easy configuration, Compatibl
 
 ```html
 <template>
-  <div>
-    <pure-slider :items='items'></pure-slider>
+  <div id="sliderWrap">
+    <pure-slider container="sliderWrap" :items='items'></pure-slider>
   </div>
 </template>
 
@@ -63,6 +63,13 @@ vue-pure-slider, A simple vue component, Easy use, Easy configuration, Compatibl
   </thead>
   <tbody>
     <tr align="center">
+      <td><code>container</code></td>
+      <td>String</td>
+      <td>Yes</td>
+      <td>''</td>
+      <td>Slider wrapper id</td>
+    </tr>
+    <tr align="center">
       <td><code>items</code></td>
       <td>Array</td>
       <td>Yes</td>
@@ -91,6 +98,13 @@ vue-pure-slider, A simple vue component, Easy use, Easy configuration, Compatibl
       <td>Auto play time interval (ms)</td>
     </tr>
     <tr align="center">
+      <td><code>speed</code></td>
+      <td>Number</td>
+      <td>-</td>
+      <td>300</td>
+      <td>Slide duration (ms)</td>
+    </tr>
+    <tr align="center">
       <td><code>propagation</code></td>
       <td>Boolean</td>
       <td>-</td>
@@ -102,7 +116,7 @@ vue-pure-slider, A simple vue component, Easy use, Easy configuration, Compatibl
       <td>Function</td>
       <td>-</td>
       <td>-</td>
-      <td>sliding callback function</td>
+      <td>Sliding callback function</td>
     </tr>
     <tr align="center">
       <td><code>endfn</code></td>
