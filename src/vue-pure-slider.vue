@@ -17,7 +17,7 @@
         </a>
       </div>
     </div>
-    <div class="vue-pure-slider-indicator">
+    <div class="vue-pure-slider-indicator" :class="{only: isOnly}">
       <ul>
         <li v-for="(item, idx) in items" :class="{'active': idx == index}" @click="slideTo(idx)">{{idx+1}}</li>
       </ul>
@@ -43,7 +43,7 @@
         type: Number,
         default: 0
       },
-      continuous: {
+      continue: {
         type: Boolean,
         default: true
       },
@@ -74,10 +74,12 @@
         width: 0,
         height: 0,
         index: this.start,
+        continuous: this.continue,
         timer: null,
         dists: '',
         speeds: '',
-        isVisible: 0,
+        isVisible: false,
+        isOnly: false,
         swiper: {
           start: {},
           delta: {},
@@ -112,6 +114,9 @@
     },
     methods: {
       init () {
+        if (this.items.length === 0) {
+          return;
+        }
         this.stop();
         this.setup();
         if (this.auto) {
@@ -119,13 +124,22 @@
         }
       },
       setup () {
+        let _len = this.items.length;
         this.wrap = document.getElementById(this.container);
         this.width = this.wrap.getBoundingClientRect().width || this.wrap.offsetWidth;
         this.height = this.wrap.getBoundingClientRect().height || this.wrap.offsetHeight;
-        if (this.index > this.items.length - 1) {
+        if (_len === 1) {
+          this.isOnly = true;
+          this.isVisible = true;
+          return;
+        }
+        if (_len < 3) {
+          this.continuous = false;
+        }
+        if (this.index > _len - 1) {
           this.index = 0;
         }
-        for (let i = 0; i < this.items.length; i++) {
+        for (let i = 0; i < _len; i++) {
           let dist = this.index > i ? -this.width : (this.index < i ? this.width : 0);
           this.setTranslate(i, dist, 0);
         }
@@ -133,7 +147,7 @@
           this.setTranslate(this.getCircleIndex(this.index-1), -this.width, 0);
           this.setTranslate(this.getCircleIndex(this.index+1), this.width, 0);
         }
-        this.isVisible = 1;
+        this.isVisible = true;
       },
       slideTo (index, speed) {
         this.stop();
@@ -153,11 +167,16 @@
       prev () {
         if (this.continuous || this.index) {
           this.slide(this.index - 1);
+        } else if (this.continue && !this.continuous && this.index === 0) {
+          this.slide(this.index + 1);
         }
       },
       next () {
-        if (this.continuous || this.index < this.items.length - 1) {
+        let _len = this.items.length;
+        if (this.continuous || this.index < _len - 1) {
           this.slide(this.index + 1);
+        } else if (this.continue && !this.continuous && this.index === _len - 1) {
+          this.slide(this.index - 1);
         }
       },
       stop () {
@@ -198,6 +217,9 @@
       swipeStart (ev) {
         let _isTouch = !!(ev.type === 'touchstart');
         let _touch = _isTouch ? ev.touches[0] : ev;
+        if (this.isOnly) {
+          return;
+        }
         if (this.propagation) {
           ev.stopPropagation();
         }
@@ -222,7 +244,7 @@
         if (_isTouch && ev.touches.length > 1 || ev.scale && ev.scale !== 1) {
           return;
         }
-        if (!this.swiper.isMove) {
+        if (!this.swiper.isMove || this.isOnly) {
           return;
         }
         if (this.disableScroll) {
@@ -274,6 +296,9 @@
         let direction = this.swiper.delta.x < 0;
 
         this.swiper.isMove = false;
+        if (this.isOnly) {
+          return;
+        }
         if (this.propagation) {
           ev.stopPropagation();
         }
@@ -388,6 +413,9 @@
       position: absolute;
       bottom: 0;
       width: 100%;
+      &.only {
+        display: none;
+      }
 
       ul {
         text-align: center;

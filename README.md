@@ -84,7 +84,7 @@ vue-pure-slider, A simple vue component, Easy use, Easy configuration, Compatibl
       <td>Slider start position</td>
     </tr>
     <tr align="center">
-      <td><code>continuous</code></td>
+      <td><code>continue</code></td>
       <td>Boolean</td>
       <td>-</td>
       <td>true</td>
