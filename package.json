@@ -1,6 +1,6 @@
 {
   "name": "vue-pure-slider",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "vue-slider,A simple slider component,easy use,and is compatible with mobile and PC terminal",
   "main": "./dist/index.js",
   "scripts": {
