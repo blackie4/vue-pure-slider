@@ -49,6 +49,47 @@ vue-pure-slider, A simple vue component, Easy use, Easy configuration, Compatibl
   }
 </script>
 ```
+or
+```html
+<html>
+  <body>
+
+    <div id="wrap">
+      <vue-pure-slider container="wrap" :items='items'></vue-pure-slider>
+    </div>
+
+    <script src="***/vue.min.js"></script>
+    <script src="***/dist/index.js"></script>
+    <script>
+      new Vue({
+        el: '#wrap',
+        data: {
+          items() {
+            return [
+              {
+                title: 'pic1',
+                imgUrl: 'http://kuscript.com/vue-pure-slider/img/slider1.jpg',
+                link: ''
+              },
+              {
+                title: 'pic2',
+                imgUrl: 'http://kuscript.com/vue-pure-slider/img/slider2.jpg',
+                link: ''
+              },
+              {
+                title: 'pic3',
+                imgUrl: 'http://kuscript.com/vue-pure-slider/img/slider3.jpg',
+                link: ''
+              }
+            ]
+          }
+        }
+      });
+    </script>
+
+  </body>
+</html>
+```
 
 ### Props Param
 <table width="100%">
