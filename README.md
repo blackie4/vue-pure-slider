@@ -2,6 +2,11 @@
 
 vue-pure-slider, A simple vue component, Easy use, Easy configuration, Compatible Mobile&PC
 
+[![npm](https://img.shields.io/npm/v/vue-pure-slider.svg)](https://github.com/blackie4/vue-pure-slider)
+[![npm](https://img.shields.io/npm/dm/vue-pure-slider.svg)](https://github.com/blackie4/vue-pure-slider)
+[![Github file size](https://img.shields.io/github/size/blackie4/vue-pure-slider/dist/index.js.svg)](https://github.com/blackie4/vue-pure-slider)
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/blackie4/vue-pure-slider)
+
 [Demo](http://kuscript.com/vue-pure-slider/index.html)
 
 ### Install
